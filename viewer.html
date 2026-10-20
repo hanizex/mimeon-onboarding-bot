@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<base target="_top">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<meta name="robots" content="noindex, nofollow">
+<style>
+  :root { color-scheme: light dark; }
+  body { font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; margin: 0; padding: 16px; background: #f6f7f9; color: #1d1f23; }
+  @media (prefers-color-scheme: dark) { body { background: #16181c; color: #e8eaed; } .card { background: #1f2227; } .meta { color: #aab0b8; } }
+  main { max-width: 860px; margin: 0 auto; }
+  .card { background: #fff; border-radius: 12px; padding: 16px; margin-bottom: 12px; box-shadow: 0 1px 3px rgba(0,0,0,.12); }
+  h1 { font-size: 20px; margin: 0 0 8px; }
+  .note { margin: 0 0 8px; }
+  dl.meta { display: grid; grid-template-columns: max-content 1fr; gap: 4px 12px; margin: 8px 0 0; font-size: 14px; color: #5f6368; }
+  dl.meta dt { font-weight: 600; }
+  dl.meta dd { margin: 0; word-break: break-word; }
+  img, video { max-width: 100%; height: auto; border-radius: 8px; }
+  audio { width: 100%; }
+  pre { white-space: pre-wrap; word-break: break-word; margin: 0; font: 14px/1.5 ui-monospace, Menlo, Consolas, monospace; }
+  a.btn { display: inline-block; padding: 10px 16px; border-radius: 8px; background: #1a73e8; color: #fff; text-decoration: none; }
+</style>
+</head>
+<body>
+<main>
+  <div class="card">
+    <h1><?= model.title ?></h1>
+    <? if (model.note) { ?><p class="note"><?= model.note ?></p><? } ?>
+
+    <? if (model.kind === 'image') { ?>
+      <img alt="Вкладення" src="data:<?!= model.mime ?>;base64,<?!= model.b64 ?>">
+    <? } else if (model.kind === 'video') { ?>
+      <video controls playsinline src="data:<?!= model.mime ?>;base64,<?!= model.b64 ?>"></video>
+    <? } else if (model.kind === 'audio') { ?>
+      <audio controls src="data:<?!= model.mime ?>;base64,<?!= model.b64 ?>"></audio>
+    <? } else if (model.kind === 'text') { ?>
+      <pre><?= model.text ?></pre>
+    <? } else if (model.kind === 'download') { ?>
+      <a class="btn" download="<?= model.filename ?>" href="data:application/octet-stream;base64,<?!= model.b64 ?>">Завантажити файл</a>
+    <? } ?>
+
+    <? if (model.meta) { ?>
+      <dl class="meta">
+        <dt>Звернення</dt><dd><?= model.meta.ticket ?></dd>
+        <dt>Тип</dt><dd><?= model.meta.type ?></dd>
+        <dt>Назва файла</dt><dd><?= model.meta.name ?></dd>
+        <dt>Розмір</dt><dd><?= model.meta.size ?></dd>
+        <? if (model.meta.caption) { ?><dt>Підпис</dt><dd><?= model.meta.caption ?></dd><? } ?>
+      </dl>
+    <? } ?>
+  </div>
+</main>
+</body>
+</html>
